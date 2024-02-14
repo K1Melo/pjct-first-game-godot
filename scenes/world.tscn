@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://r8f3kbyyylw6"]
+[gd_scene load_steps=20 format=3 uid="uid://r8f3kbyyylw6"]
 
 [ext_resource type="Texture2D" uid="uid://cbrgyi1rr21gt" path="res://art/tilesets/plains.png" id="1_anuy4"]
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_qlwyw"]
@@ -245,6 +245,92 @@ sources/2 = SubResource("TileSetAtlasSource_m07dq")
 sources/5 = SubResource("TileSetAtlasSource_vmnwk")
 sources/6 = SubResource("TileSetAtlasSource_f80d6")
 
+[sub_resource type="Animation" id="Animation_5t5cy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(21, 155)]
+}
+
+[sub_resource type="Animation" id="Animation_ip7vn"]
+resource_name = "enter_world"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 2),
+"update": 0,
+"values": [Vector2(20, 155), Vector2(50, 155)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("player")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [true, "right", "side_walk", false],
+"method": &"on_cutscene_enter_cliffside"
+}, {
+"args": [false, "right", "side_idle", false],
+"method": &"on_cutscene_enter_cliffside"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_issx2"]
+resource_name = "left_cliffside"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(178, 16), Vector2(178, 58)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("player")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [true, "down", "front_walk", false],
+"method": &"on_cutscene_enter_cliffside"
+}, {
+"args": [false, "down", "front_idle", false],
+"method": &"on_cutscene_enter_cliffside"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wccwx"]
+_data = {
+"RESET": SubResource("Animation_5t5cy"),
+"enter_world": SubResource("Animation_ip7vn"),
+"left_cliffside": SubResource("Animation_issx2")
+}
+
 [node name="world" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_qlwyw")
@@ -285,6 +371,11 @@ layer_3/name = "Mid-Back"
 layer_3/y_sort_enabled = true
 layer_3/z_index = -1
 layer_3/tile_data = PackedInt32Array(458765, 196610, 4, 327691, 131074, 4, 393224, 196610, 4, 393232, 65538, 4, 327689, 65538, 4)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wccwx")
+}
 
 [connection signal="body_entered" from="cliffside_transition_point" to="." method="_on_cliffside_transition_point_body_entered"]
 [connection signal="body_exited" from="cliffside_transition_point" to="." method="_on_cliffside_transition_point_body_exited"]

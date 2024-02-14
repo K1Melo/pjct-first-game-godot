@@ -151,3 +151,13 @@ func _on_regin_timer_timeout():
 			health = 100
 	if health <= 0:
 		health = 0
+		
+func on_cutscene_enter_cliffside(b:bool, dir:String, anim:String, turns:bool):
+	if b:
+		current_dir = dir
+		$AnimatedSprite2D.play(anim)
+	else: 
+		current_dir = dir
+		$AnimatedSprite2D.flip_h = turns
+		$AnimatedSprite2D.play(anim)
+
